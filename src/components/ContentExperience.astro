@@ -1,0 +1,329 @@
+---
+interface Experience {
+    name: string;
+    role: string;
+    description: string;
+    fullDescription: string[];
+    date: {
+        start: string;
+        end: string;
+    };
+}
+
+const experience: Experience[] = [
+    {
+        name: "Globant",
+        role: "Senior DevOps Engineer",
+        description:
+            "Python and cloud developer for an ongoing project in the entertainment and parks industry with a huge client.",
+        fullDescription: [
+            "Python and cloud developer for an ongoing project in the entertainment and parks industry with a huge client",
+            "Lead for a project that involves the creation of serverless stacks used for Cloud User Audit purposes",
+            "Stack created in AWS using Serverless Application Model, AWS Lambda, SQS, API Gateway, and many more services",
+            "Automation and APIs made using Python, extracting data from Azure and GCP",
+            "Responsible for maintaining and addressing issues for the automation of patches for environments in AWS services",
+            "Including EC2, ECS, and RDS",
+        ],
+        date: {
+            start: "2024-10",
+            end: "Present",
+        },
+    },
+    {
+        name: "Fluid Attacks",
+        role: "Senior DevOps/Full-stack Engineer",
+        description:
+            "Maintainer and Co-leader in improving all the projects' CI/CD pipelines with both Gitlab CI and Github Actions.",
+        fullDescription: [
+            "Maintainer and Co-leader in improving all the projects' CI/CD pipelines with both Gitlab CI and Github Actions",
+            "Maintained the company's global Infrastructure as code (IaC) and Cloud services (AWS) using Terraform",
+            "Improved the development team's development experience with an in-house implementation of a tool called Makes",
+            "Tool written in Python and Nix",
+            "Maintainer of the main Kubernetes cluster used for a Web application and its services",
+            "Cluster configured using AWS EKS and AWS EC2 Autoscaling groups for escalation",
+            "Creator, Maintainer, and Lead of Observability at the company",
+            "Designed the architecture, stack to use, and implemented the global observability solution",
+            "Including Tracing, Logging, Metrics, and the Alerts system",
+            "Co-creator of the architecture to connect private servers from clients to the company services",
+            "Connected our servers to developers and the hacking team using the Cloudflare SASE stack",
+        ],
+        date: {
+            start: "2019-07",
+            end: "2024-08",
+        },
+    },
+    {
+        name: "ARUS",
+        role: "Software Development Intern",
+        description:
+            "Junior IT support attending and solving tickets on Serviceaide.",
+        fullDescription: [
+            "Junior IT support attending and solving tickets on Serviceaide",
+            "Administered the main database and solved bugs for a web application",
+        ],
+        date: {
+            start: "2019-01",
+            end: "2019-07",
+        },
+    },
+];
+---
+
+<div class="relative">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="experience-grid">
+        {
+            experience.map((experience, index) => (
+                <div
+                    class="experience-card flex flex-col justify-center items-start border border-gray-700 rounded-lg p-4 bg-black transition-all duration-500 ease-in-out transform hover:scale-[1.02] hover:border-gray-500"
+                    id={`experience-${index}`}
+                    data-index={index}
+                >
+                    <h3 class="text-xl font-semibold text-white mb-2 flex justify-between w-full">
+                        {experience.name}
+                    </h3>
+
+                    <p class="text-gray-400">{experience.role}</p>
+                    <br />
+                    <p class="text-gray-400" id={`description-${index}`}>
+                        {experience.description}
+                    </p>
+                    <div
+                        class="text-gray-400 hidden space-y-2"
+                        id={`full-description-${index}`}
+                    >
+                        <ul class="list-disc list-inside space-y-1">
+                            {experience.fullDescription.map((item: string) => (
+                                <li class="text-sm leading-relaxed">{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <br />
+
+                    {experience.date?.start ? (
+                        <p class="text-gray-400">
+                            {experience.date.start} - {experience.date.end}
+                        </p>
+                    ) : null}
+
+                    <button
+                        class="mt-3 text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
+                        data-index={index}
+                        id={`toggle-btn-${index}`}
+                    >
+                        Read more
+                    </button>
+                </div>
+            ))
+        }
+    </div>
+
+    <!-- Expanded Card Overlay -->
+    <div
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-all duration-500 ease-in-out flex items-center justify-center"
+        id="expanded-overlay"
+    >
+        <div
+            class="w-full max-w-4xl mx-4 bg-black border border-gray-700 rounded-lg p-6 max-h-[80vh] overflow-y-auto relative"
+            id="expanded-content"
+        >
+            <!-- Close Button -->
+            <button
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200 text-2xl font-bold z-10"
+                id="close-expanded"
+            >
+                ×
+            </button>
+
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .experience-card {
+        cursor: pointer;
+    }
+
+    .experience-card.expanded {
+        transform: scale(1.05);
+        border-color: rgb(59 130 246);
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+
+    #expanded-overlay {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    #expanded-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #expanded-content {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.3s ease-in-out;
+    }
+
+    #expanded-overlay.show #expanded-content {
+        opacity: 1;
+        transform: scale(1);
+    }
+</style>
+
+<script>
+    let currentlyExpanded: number | null = null;
+
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // Add click event listeners to all toggle buttons
+        const toggleButtons = document.querySelectorAll("[data-index]");
+
+        toggleButtons.forEach((button) => {
+            button.addEventListener(
+                "click",
+                function (this: HTMLButtonElement) {
+                    const index = this.getAttribute("data-index");
+                    if (index !== null) {
+                        expandExperience(parseInt(index));
+                    }
+                },
+            );
+        });
+
+        // Add close button event listener
+        const closeButton = document.getElementById("close-expanded");
+        if (closeButton) {
+            closeButton.addEventListener("click", closeExpanded);
+        }
+
+        // Close on overlay click
+        const overlay = document.getElementById("expanded-overlay");
+        if (overlay) {
+            overlay.addEventListener("click", function (e) {
+                if (e.target === overlay) {
+                    closeExpanded();
+                }
+            });
+        }
+
+        // Close on escape key
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                closeExpanded();
+            }
+        });
+    });
+
+    function expandExperience(index: number) {
+        const experience = experienceData[index];
+        if (!experience) return;
+
+        const overlay = document.getElementById("expanded-overlay");
+        const content = document.getElementById("expanded-content");
+
+        if (overlay && content) {
+            // Populate content
+            content.innerHTML = `
+                <button 
+                    class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200 text-2xl font-bold"
+                    id="close-expanded"
+                >
+                    ×
+                </button>
+                
+                <div class="pr-8">
+                    <h2 class="text-3xl font-bold text-white mb-4">${experience.name}</h2>
+                    <p class="text-xl text-primary mb-2">${experience.role}</p>
+                    <p class="text-gray-400 mb-4">${experience.date.start} - ${experience.date.end}</p>
+                    
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-semibold text-white">Key Responsibilities & Achievements:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            ${experience.fullDescription.map((item) => `<li>${item}</li>`).join("")}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            // Re-add close button event listener
+            const newCloseButton = content.querySelector("#close-expanded");
+            if (newCloseButton) {
+                newCloseButton.addEventListener("click", closeExpanded);
+            }
+
+            // Show overlay with animation
+            overlay.classList.remove("hidden");
+            setTimeout(() => {
+                overlay.classList.add("show");
+            }, 10);
+
+            currentlyExpanded = index;
+        }
+    }
+
+    function closeExpanded() {
+        const overlay = document.getElementById("expanded-overlay");
+        if (overlay) {
+            overlay.classList.remove("show");
+            setTimeout(() => {
+                overlay.classList.add("hidden");
+            }, 500);
+        }
+        currentlyExpanded = null;
+    }
+
+    // Make experience data available globally for the expand function
+    const experienceData = [
+        {
+            name: "Globant",
+            role: "Senior DevOps Engineer",
+            fullDescription: [
+                "Python and cloud developer for an ongoing project in the entertainment and parks industry with a huge client",
+                "Lead for a project that involves the creation of serverless stacks used for Cloud User Audit purposes",
+                "Stack created in AWS using Serverless Application Model, AWS Lambda, SQS, API Gateway, and many more services",
+                "Automation and APIs made using Python, extracting data from Azure and GCP",
+                "Responsible for maintaining and addressing issues for the automation of patches for environments in AWS services",
+                "Including EC2, ECS, and RDS",
+            ],
+            date: {
+                start: "2024-10",
+                end: "Present",
+            },
+        },
+        {
+            name: "Fluid Attacks",
+            role: "Senior DevOps/Full-stack Engineer",
+            fullDescription: [
+                "Maintainer and Co-leader in improving all the projects' CI/CD pipelines with both Gitlab CI and Github Actions",
+                "Maintained the company's global Infrastructure as code (IaC) and Cloud services (AWS) using Terraform",
+                "Improved the development team's development experience with an in-house implementation of a tool called Makes",
+                "Tool written in Python and Nix",
+                "Maintainer of the main Kubernetes cluster used for a Web application and its services",
+                "Cluster configured using AWS EKS and AWS EC2 Autoscaling groups for escalation",
+                "Creator, Maintainer, and Lead of Observability at the company",
+                "Designed the architecture, stack to use, and implemented the global observability solution",
+                "Including Tracing, Logging, Metrics, and the Alerts system",
+                "Co-creator of the architecture to connect private servers from clients to the company services",
+                "Connected our servers to developers and the hacking team using the Cloudflare SASE stack",
+            ],
+            date: {
+                start: "2019-07",
+                end: "2024-08",
+            },
+        },
+        {
+            name: "ARUS",
+            role: "Software Development Intern",
+            fullDescription: [
+                "Junior IT support attending and solving tickets on Serviceaide",
+                "Administered the main database and solved bugs for a web application",
+            ],
+            date: {
+                start: "2019-01",
+                end: "2019-07",
+            },
+        },
+    ];
+</script>

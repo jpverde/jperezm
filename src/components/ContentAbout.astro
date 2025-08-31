@@ -1,0 +1,106 @@
+---
+import { Code } from "astro:components";
+
+const code = `from typing import List, Literal, Union
+from dataclasses import dataclass
+
+@dataclass
+class Developer:
+    name: str
+    skills: List[str]
+    interests: List[str]
+
+@dataclass
+class TechStack:
+    dev_ops: List[str]
+    sre: List[str]
+    infra: List[str]
+    scripting: List[str]
+
+ContactType = Literal['github', 'linkedin', 'email']
+
+tech_stack = TechStack(
+    dev_ops=[
+        'AWS',
+        'GitLab',
+        'GitHub', 
+        'Cloudflare',
+        'Docker',
+        'Kubernetes',
+        'Bazel',
+    ],
+    sre=[
+        'OpenTelemetry',
+        'Prometheus',
+        'Grafana',
+        'Istio',
+        'Nagios',
+        'Datadog',
+    ],
+    scripting=[
+        'Python',
+        'Go',
+        'Rust',
+        'Bash',
+        'TypeScript',
+    ],
+    infra=[
+        'Terraform',
+        'Linux',
+        'PostgreSQL',
+        'Redis',
+    ]
+)
+
+# Developer profile
+me = Developer(
+    name='John Perez.',
+    skills=tech_stack.dev_ops + tech_stack.sre + tech_stack.infra + tech_stack.scripting,
+    interests=[
+        'Open Source',
+        'DevOps',
+        'Site Reliability Engineering',
+        'Cloud Computing',
+        'Automation',
+        'Infrastructure as Code',
+        'Networking',
+        'Security',
+    ]
+)
+
+# Contact function
+def contact(contact_type: ContactType) -> str:
+    contact_map = {
+        'github': 'https://github.com/jpverde',
+        'linkedin': 'https://www.linkedin.com/in/johnjperezm96',
+        'email': 'mrjohnjairo10@gmail.com'
+    }
+    return contact_map.get(contact_type, 'Send email.')
+
+`;
+---
+
+<Code code={code} lang="python" wrap={true} />
+
+<style is:global>
+    /* Custom styling for code block line numbers */
+    pre.astro-code {
+        @apply bg-transparent !important;
+    }
+
+    pre.astro-code code {
+        @apply block;
+        counter-reset: step;
+        counter-increment: step 0;
+    }
+
+    pre.astro-code code .line {
+        @apply relative;
+    }
+
+    pre.astro-code code .line::before {
+        content: counter(step);
+        counter-increment: step;
+        @apply text-gray-600 pr-2;
+    }
+</style>
