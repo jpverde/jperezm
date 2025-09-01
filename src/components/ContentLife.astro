@@ -1,0 +1,255 @@
+---
+interface LifeExperience {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  date: string;
+  location?: string;
+  tags?: string[];
+}
+
+const lifeExperiences: LifeExperience[] = [
+  {
+    id: "1",
+    title: "Mountain Hiking Adventure",
+    description:
+      "Explored the beautiful mountain trails and captured some amazing views. The fresh air and challenging terrain made for an unforgettable experience.",
+    image:
+      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop",
+    date: "2024-01-15",
+    location: "Rocky Mountains, CO",
+    tags: ["Adventure", "Nature", "Photography"],
+  },
+  {
+    id: "2",
+    title: "Tech Conference 2024",
+    description:
+      "Attended an amazing tech conference where I learned about the latest trends in DevOps and cloud computing. Met some incredible people in the industry.",
+    image:
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&h=300&fit=crop",
+    date: "2024-02-20",
+    location: "San Francisco, CA",
+    tags: ["Technology", "Networking", "Learning"],
+  },
+  {
+    id: "3",
+    title: "Weekend Beach Trip",
+    description:
+      "Perfect weekend getaway to the beach. Spent time relaxing, reading, and enjoying the sunset. Sometimes you need to disconnect to reconnect.",
+    image:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",
+    date: "2024-03-10",
+    location: "Malibu, CA",
+    tags: ["Relaxation", "Beach", "Sunset"],
+  },
+  {
+    id: "4",
+    title: "Cooking Class Experience",
+    description:
+      "Took an Italian cooking class and learned to make authentic pasta from scratch. The chef was amazing and the food was delicious!",
+    image:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop",
+    date: "2024-04-05",
+    location: "Little Italy, NYC",
+    tags: ["Cooking", "Italian", "Learning"],
+  },
+];
+---
+
+<div class="life-feed">
+  <div class="feed-header">
+    <h2 class="text-2xl font-bold text-white mb-2">Life Experiences</h2>
+    <p class="text-gray-400 mb-6">Moments and adventures that shape who I am</p>
+  </div>
+
+  <div class="feed-container">
+    {
+      lifeExperiences.map((experience) => (
+        <article class="life-post" data-id={experience.id}>
+          <div class="post-image">
+            <img
+              src={experience.image}
+              alt={experience.title}
+              class="w-full h-48 object-cover rounded-t-lg"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="post-content">
+            <div class="post-header">
+              <h3 class="post-title">{experience.title}</h3>
+              <div class="post-meta">
+                <span class="post-date">{experience.date}</span>
+                {experience.location && (
+                  <span class="post-location">📍 {experience.location}</span>
+                )}
+              </div>
+            </div>
+
+            <p class="post-description">{experience.description}</p>
+
+            {experience.tags && experience.tags.length > 0 && (
+              <div class="post-tags">
+                {experience.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .life-feed {
+    max-width: 100%;
+  }
+
+  .feed-header {
+    margin-bottom: 2rem;
+  }
+
+  .feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .life-post {
+    background: #111111;
+    border: 1px solid #374151;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .life-post:hover {
+    transform: translateY(-2px);
+    border-color: #f43f5e;
+    box-shadow: 0 4px 20px rgba(244, 63, 94, 0.1);
+  }
+
+  .post-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-image img {
+    transition: transform 0.3s ease;
+  }
+
+  .life-post:hover .post-image img {
+    transform: scale(1.05);
+  }
+
+  .post-content {
+    padding: 1.5rem;
+  }
+
+  .post-header {
+    margin-bottom: 1rem;
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+
+  .post-date {
+    font-weight: 500;
+  }
+
+  .post-location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .post-description {
+    color: #d1d5db;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background: rgba(244, 63, 94, 0.1);
+    color: #f43f5e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+  }
+
+  /* Responsive design */
+  @media (min-width: 768px) {
+    .feed-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .post-content {
+      padding: 1rem;
+    }
+
+    .post-title {
+      font-size: 1.125rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  /* Animation for new posts */
+  .life-post {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .life-post:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .life-post:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .life-post:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .life-post:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

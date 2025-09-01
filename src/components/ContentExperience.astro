@@ -4,6 +4,7 @@ interface Experience {
     role: string;
     description: string;
     fullDescription: string[];
+    skills: string[];
     date: {
         start: string;
         end: string;
@@ -23,6 +24,17 @@ const experience: Experience[] = [
             "Automation and APIs made using Python, extracting data from Azure and GCP",
             "Responsible for maintaining and addressing issues for the automation of patches for environments in AWS services",
             "Including EC2, ECS, and RDS",
+        ],
+        skills: [
+            "Python",
+            "AWS",
+            "Serverless",
+            "Lambda",
+            "API Gateway",
+            "SQS",
+            "EC2",
+            "ECS",
+            "RDS",
         ],
         date: {
             start: "2024-10",
@@ -47,6 +59,18 @@ const experience: Experience[] = [
             "Co-creator of the architecture to connect private servers from clients to the company services",
             "Connected our servers to developers and the hacking team using the Cloudflare SASE stack",
         ],
+        skills: [
+            "GitLab CI",
+            "GitHub Actions",
+            "Terraform",
+            "AWS",
+            "Python",
+            "Nix",
+            "Kubernetes",
+            "EKS",
+            "Observability",
+            "Cloudflare",
+        ],
         date: {
             start: "2019-07",
             end: "2024-08",
@@ -60,6 +84,13 @@ const experience: Experience[] = [
         fullDescription: [
             "Junior IT support attending and solving tickets on Serviceaide",
             "Administered the main database and solved bugs for a web application",
+        ],
+        skills: [
+            "IT Support",
+            "Serviceaide",
+            "Database Administration",
+            "Web Development",
+            "Bug Fixing",
         ],
         date: {
             start: "2019-01",
@@ -104,6 +135,15 @@ const experience: Experience[] = [
                             {experience.date.start} - {experience.date.end}
                         </p>
                     ) : null}
+
+                    <!-- Skills Tags -->
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        {experience.skills.map((skill: string) => (
+                            <span class="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded-md border border-gray-600">
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
 
                     <button
                         class="mt-3 text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
@@ -238,6 +278,14 @@ const experience: Experience[] = [
                     <p class="text-xl text-primary mb-2">${experience.role}</p>
                     <p class="text-gray-400 mb-4">${experience.date.start} - ${experience.date.end}</p>
                     
+                    <!-- Skills Tags -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-white mb-3">Technologies & Skills:</h3>
+                        <div class="flex flex-wrap gap-2">
+                            ${experience.skills.map((skill) => `<span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-md border border-gray-600">${skill}</span>`).join("")}
+                        </div>
+                    </div>
+                    
                     <div class="space-y-3">
                         <h3 class="text-lg font-semibold text-white">Key Responsibilities & Achievements:</h3>
                         <ul class="list-disc list-inside space-y-2 text-gray-300">
@@ -287,6 +335,7 @@ const experience: Experience[] = [
                 "Responsible for maintaining and addressing issues for the automation of patches for environments in AWS services",
                 "Including EC2, ECS, and RDS",
             ],
+            skills: ["Python", "AWS", "Serverless", "Lambda", "API Gateway", "SQS", "Azure", "GCP", "EC2", "ECS", "RDS"],
             date: {
                 start: "2024-10",
                 end: "Present",
@@ -308,6 +357,7 @@ const experience: Experience[] = [
                 "Co-creator of the architecture to connect private servers from clients to the company services",
                 "Connected our servers to developers and the hacking team using the Cloudflare SASE stack",
             ],
+            skills: ["GitLab CI", "GitHub Actions", "Terraform", "AWS", "Python", "Nix", "Kubernetes", "EKS", "Observability", "Cloudflare"],
             date: {
                 start: "2019-07",
                 end: "2024-08",
@@ -320,6 +370,7 @@ const experience: Experience[] = [
                 "Junior IT support attending and solving tickets on Serviceaide",
                 "Administered the main database and solved bugs for a web application",
             ],
+            skills: ["IT Support", "Serviceaide", "Database Administration", "Web Development", "Bug Fixing"],
             date: {
                 start: "2019-01",
                 end: "2019-07",

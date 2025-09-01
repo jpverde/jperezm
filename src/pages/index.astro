@@ -3,10 +3,12 @@ import Layout from "../layouts/Layout.astro";
 
 import Profile from "../components/Profile.astro";
 import Contact from "../components/Contact.astro";
+import Skills from "../components/Skills.astro";
 
 import ContentLink from "../components/ContentLink.astro";
 import ContentCode from "../components/ContentAbout.astro";
 import ContentExperience from "../components/ContentExperience.astro";
+import ContentLife from "../components/ContentLife.astro";
 ---
 
 <Layout>
@@ -18,9 +20,13 @@ import ContentExperience from "../components/ContentExperience.astro";
         <div
             class="p-8 md:p-6 flex flex-col justify-between w-full md:w-2/5 border-b md:border-b-0 md:border-r border-gray-600"
         >
-            <Profile />
+            <div>
+                <Profile />
 
-            <Contact />
+                <Skills />
+
+                <Contact />
+            </div>
         </div>
         <!-- End: Left / upper card -->
 
@@ -45,14 +51,23 @@ import ContentExperience from "../components/ContentExperience.astro";
                         class="tab-radio"
                     />
 
+                    <input
+                        type="radio"
+                        id="tab3"
+                        name="tabs"
+                        class="tab-radio"
+                    />
+
                     <!-- Start: Tab bar -->
                     <div
                         class="flex bg-black border-b border-gray-600 sticky top-0 z-10"
                     >
                         <ContentLink contentId="tab1" contentName="about.py" />
 
+                        <!-- <ContentLink contentId="tab2" contentName="life.md" /> -->
+
                         <ContentLink
-                            contentId="tab2"
+                            contentId="tab3"
                             contentName="experience.md"
                         />
                     </div>
@@ -66,11 +81,17 @@ import ContentExperience from "../components/ContentExperience.astro";
                         </div>
                         <!-- End: About content -->
 
-                        <!-- Start: Projects content -->
+                        <!-- Start: Life content -->
                         <div id="content2" class="tab-content">
+                            <ContentLife />
+                        </div>
+                        <!-- End: Life content -->
+
+                        <!-- Start: Experience content -->
+                        <div id="content3" class="tab-content">
                             <ContentExperience />
                         </div>
-                        <!-- End: Projects content -->
+                        <!-- End: Experience content -->
                     </div>
                     <!-- End: Tab content -->
                 </div>
@@ -126,12 +147,21 @@ import ContentExperience from "../components/ContentExperience.astro";
         @apply border-b-2 border-b-primary;
     }
 
-    /* When tab2 is checked, show content2 and highlight its tab */
+    /* When tab2 is checked, show content2 (Life) and highlight its tab */
     #tab2:checked ~ * #content2 {
         @apply block opacity-100;
     }
 
     #tab2:checked ~ .flex .tab-link:nth-child(2) {
+        @apply border-b-2 border-b-primary;
+    }
+
+    /* When tab3 is checked, show content3 (Experience) and highlight its tab */
+    #tab3:checked ~ * #content3 {
+        @apply block opacity-100;
+    }
+
+    #tab3:checked ~ .flex .tab-link:nth-child(3) {
         @apply border-b-2 border-b-primary;
     }
 </style>

@@ -1,0 +1,170 @@
+---
+interface Skill {
+  name: string;
+  percentage: string;
+  helperText?: string;
+  isOverflow?: boolean;
+}
+
+const skills: Skill[] = [
+  {
+    name: "DevOps",
+    percentage: "95%",
+  },
+  {
+    name: "Site Reliability Engineering",
+    percentage: "90%",
+  },
+  {
+    name: "Scripting",
+    percentage: "90%",
+  },
+  {
+    name: "Infrastructure as Code",
+    percentage: "95%",
+  },
+  {
+    name: "Fullfilled Life",
+    percentage: "110%",
+    isOverflow: true,
+  },
+];
+---
+
+<div class="skills-section">
+  <h3 class="text-lg font-semibold text-white mb-4">Technical Skills</h3>
+
+  <div class="space-y-4">
+    {
+      skills.map((skill) => (
+        <div class="skill-item">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-primary text-sm font-medium">{skill.name}</span>
+            <span class="text-primary text-sm font-medium">
+              {skill.percentage}
+            </span>
+          </div>
+
+          <div
+            class={`progress-bar-container ${skill.isOverflow ? "overflow-container" : ""}`}
+          >
+            <div
+              class={`progress-bar-fill ${skill.isOverflow ? "overflow-fill" : ""}`}
+              style={`width: ${skill.percentage}`}
+            />
+            {skill.isOverflow && <div class="limit-marker" />}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .skills-section {
+    margin-top: 2rem;
+  }
+
+  .skill-item {
+    width: 100%;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(75, 85, 99, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #9ca3af 0%, #6b7280 100%);
+    border-radius: 4px;
+    transition: width 1.5s ease-in-out;
+    position: relative;
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+  }
+
+  /* Overflow effect for Fullfilled Life */
+  .overflow-container {
+    overflow: visible;
+  }
+
+  .overflow-fill {
+    width: 105% !important;
+    background: linear-gradient(90deg, #f43f5e 0%, #dc2626 100%);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  /* Limit marker to show where 100% should be */
+  .limit-marker {
+    position: absolute;
+    top: -2px;
+    left: 100%;
+    width: 2px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 1px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    z-index: 10;
+  }
+
+  .limit-marker::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    font-size: 10px;
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  }
+
+  .progress-bar-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .skills-section {
+      margin-top: 1.5rem;
+    }
+
+    .skill-item {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.8);
+    }
+  }
+</style>
