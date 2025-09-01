@@ -17,6 +17,10 @@
     {
       "pattern": "jperezm.com",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.jperezm.com",
+      "custom_domain": true
     }
   ]
 }
