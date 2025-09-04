@@ -4,7 +4,6 @@ interface LifeExperience {
   title: string;
   description: string;
   image: string;
-  date: string;
   location?: string;
   tags?: string[];
 }
@@ -14,45 +13,31 @@ const lifeExperiences: LifeExperience[] = [
     id: "1",
     title: "This is me",
     description:
-      "I'm a big fan of the outdoors, and I love to hike. I'm also a big fan of the city, and I love to explore new places.",
+      "I love exploring new places on my motorcycle, discovering beautiful landscapes and enjoying new adventures.",
     image:
-      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop",
-    date: "2024-01-15",
-    location: "Rocky Mountains, CO",
+      "https://res.cloudinary.com/dxx0t18g1/image/upload/c_fill,g_auto,h_600,w_800/v1756944000/20240420_121939-COLLAGE_cvlgzx.jpg",
+    location: "Colombia",
     tags: ["Adventure", "Nature", "Photography"],
   },
   {
     id: "2",
-    title: "Tech Conference 2024",
+    title: "This is my wife",
     description:
-      "Attended an amazing tech conference where I learned about the latest trends in DevOps and cloud computing. Met some incredible people in the industry.",
+      "Exploring new places with my wife makes every adventure more meaningful. She's a big reason I enjoy life so much.",
     image:
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&h=300&fit=crop",
-    date: "2024-02-20",
-    location: "San Francisco, CA",
-    tags: ["Technology", "Networking", "Learning"],
+      "https://res.cloudinary.com/dxx0t18g1/image/upload/c_fill,g_auto,h_600,w_800/v1756945632/b9db980d-20f6-4081-b4ed-3ea56a2f5b8f-COLLAGE_vhc7xw.jpg",
+    location: "Colombia",
+    tags: ["Love", "Companionship", "Adventure"],
   },
   {
     id: "3",
-    title: "Weekend Beach Trip",
+    title: "This is my family",
     description:
-      "Perfect weekend getaway to the beach. Spent time relaxing, reading, and enjoying the sunset. Sometimes you need to disconnect to reconnect.",
+      "Spending time with my family is what makes life special. Every moment together creates memories and brings us closer.",
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",
-    date: "2024-03-10",
-    location: "Malibu, CA",
-    tags: ["Relaxation", "Beach", "Sunset"],
-  },
-  {
-    id: "4",
-    title: "Cooking Class Experience",
-    description:
-      "Took an Italian cooking class and learned to make authentic pasta from scratch. The chef was amazing and the food was delicious!",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop",
-    date: "2024-04-05",
-    location: "Little Italy, NYC",
-    tags: ["Cooking", "Italian", "Learning"],
+      "https://res.cloudinary.com/dxx0t18g1/image/upload/c_fill,g_auto,h_600,w_800/v1756946389/image-COLLAGE_dvhpyv.jpg",
+    location: "Colombia",
+    tags: ["Family", "Love", "Companionship"],
   },
 ];
 ---
@@ -65,8 +50,8 @@ const lifeExperiences: LifeExperience[] = [
 
   <div class="feed-container">
     {
-      lifeExperiences.map((experience) => (
-        <article class="life-post" data-id={experience.id}>
+      lifeExperiences.map((experience, index) => (
+        <article class="life-post" data-life-card-index={index}>
           <div class="post-image">
             <img
               src={experience.image}
@@ -80,7 +65,6 @@ const lifeExperiences: LifeExperience[] = [
             <div class="post-header">
               <h3 class="post-title">{experience.title}</h3>
               <div class="post-meta">
-                <span class="post-date">{experience.date}</span>
                 {experience.location && (
                   <span class="post-location">📍 {experience.location}</span>
                 )}
@@ -96,10 +80,38 @@ const lifeExperiences: LifeExperience[] = [
                 ))}
               </div>
             )}
+
+            <button
+              class="mt-3 text-primary hover:text-primary/80 text-sm font-medium transition-colors duration-200"
+              data-life-index={index}
+            >
+              View Details
+            </button>
           </div>
         </article>
       ))
     }
+  </div>
+
+  <!-- Expanded Card Overlay -->
+  <div
+    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-all duration-500 ease-in-out flex items-center justify-center"
+    id="life-expanded-overlay"
+  >
+    <div
+      class="w-full max-w-4xl mx-4 bg-black border border-gray-700 rounded-lg p-6 max-h-[80vh] overflow-y-auto relative"
+      id="life-expanded-content"
+    >
+      <!-- Close Button -->
+      <button
+        class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200 text-2xl font-bold z-10"
+        id="life-close-expanded"
+      >
+        ×
+      </button>
+
+      <!-- Content will be populated by JavaScript -->
+    </div>
   </div>
 </div>
 
@@ -168,10 +180,6 @@ const lifeExperiences: LifeExperience[] = [
     gap: 1rem;
     font-size: 0.875rem;
     color: #9ca3af;
-  }
-
-  .post-date {
-    font-weight: 500;
   }
 
   .post-location {
@@ -252,4 +260,208 @@ const lifeExperiences: LifeExperience[] = [
       transform: translateY(0);
     }
   }
+
+  /* Expanded view styles */
+  #life-expanded-overlay {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  #life-expanded-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #life-expanded-content {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #life-expanded-overlay.show #life-expanded-content {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .expanded-image {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
 </style>
+
+<script>
+  (function () {
+    // Completely isolate life tab JavaScript
+    let currentlyExpandedLife: number | null = null;
+
+    // Make life experiences data available for the expand function
+    const lifeExperiencesData = [
+      {
+        id: "1",
+        title: "This is me",
+        description:
+          "I'm a big fan of traveling to nearby towns in my country, and I absolutely love going on road trips with my motorcycle. Every journey brings new experiences and allows me to discover beautiful landscapes that I might never have seen otherwise. Over the years, I've explored beaches with golden sands, majestic mountains, lush natural parks, and countless hidden gems along the way. Each trip is an adventure, filled with moments of freedom, excitement, and a deep connection to nature. Riding my motorcycle gives me a sense of peace and joy, and these explorations have become an essential part of my life. It's one of the most enjoyable and fulfilling things I do, constantly inspiring me to seek out new places and create unforgettable memories.",
+        image:
+          "https://res.cloudinary.com/dxx0t18g1/image/upload/v1756944000/20240420_121939-COLLAGE_cvlgzx.jpg",
+        location: "Colombia",
+        tags: ["Adventure", "Nature", "Roadtrip"],
+      },
+      {
+        id: "2",
+        title: "This is my wife",
+        description:
+          "Traveling and exploring new places is even more special with my wife by my side. She brings joy, laughter, and meaning to every adventure we share. Whether we're hiking through lush forests, wandering vibrant city streets, or simply enjoying a quiet sunset together, her presence makes every moment richer and more memorable. Together, we create unforgettable memories, support each other's dreams, and find happiness in both the big adventures and the small, everyday experiences. She is my partner, my best friend, and a big part of why these moments are so important to me. Our journeys together have taught me the true value of companionship, love, and shared discovery, and I am endlessly grateful for every experience we share.",
+        image:
+          "https://res.cloudinary.com/dxx0t18g1/image/upload/v1756945632/b9db980d-20f6-4081-b4ed-3ea56a2f5b8f-COLLAGE_vhc7xw.jpg",
+        location: "Colombia",
+        tags: ["Love", "Companionship", "Adventure"],
+      },
+      {
+        id: "3",
+        title: "This is my family",
+        description:
+          "Spending quality time with my family is one of the most important things in my life. Every moment spent together creates lasting memories and strengthens our bond. Whether we're sharing a meal, playing games, or just enjoying each other's company, these moments are what truly make life special. I cherish every opportunity to be with them and create new memories together, as they are the foundation of my happiness and joy. \n\nIn our family, we love to go on weekend getaways, explore new places, and celebrate even the smallest achievements together. From beach vacations to cozy evenings at home, every experience is made better by their presence. My family supports me through every challenge and celebrates every success, reminding me of the importance of love, unity, and togetherness. These shared experiences have shaped who I am and continue to inspire me to be a better person every day.",
+        image:
+          "https://res.cloudinary.com/dxx0t18g1/image/upload/v1756946389/image-COLLAGE_dvhpyv.jpg",
+        location: "Colombia",
+        tags: ["Family", "Love", "Companionship"],
+      },
+    ];
+
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+      // Add click event listeners to all life cards
+      const lifeCards = document.querySelectorAll("[data-life-card-index]");
+      lifeCards.forEach((card) => {
+        card.addEventListener("click", function (this: HTMLElement) {
+          const index = this.getAttribute("data-life-card-index");
+          if (index !== null) {
+            expandLifeExperience(parseInt(index));
+          }
+        });
+      });
+
+      // Add click event listeners to all life toggle buttons
+      const lifeToggleButtons = document.querySelectorAll("[data-life-index]");
+
+      lifeToggleButtons.forEach((button) => {
+        button.addEventListener(
+          "click",
+          function (this: HTMLButtonElement, event) {
+            event.stopPropagation(); // Prevent event bubbling
+            const index = this.getAttribute("data-life-index");
+            if (index !== null) {
+              expandLifeExperience(parseInt(index));
+            }
+          },
+        );
+      });
+
+      // Add close button event listener
+      const closeButton = document.getElementById("life-close-expanded");
+      if (closeButton) {
+        closeButton.addEventListener("click", closeLifeExpanded);
+      }
+
+      // Close on overlay click
+      const overlay = document.getElementById("life-expanded-overlay");
+      if (overlay) {
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) {
+            closeLifeExpanded();
+          }
+        });
+      }
+
+      // Close on escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeLifeExpanded();
+        }
+      });
+    });
+
+    function expandLifeExperience(index: number) {
+      const experience = lifeExperiencesData[index];
+      if (!experience) return;
+
+      const overlay = document.getElementById("life-expanded-overlay");
+      const content = document.getElementById("life-expanded-content");
+
+      if (overlay && content) {
+        // Get full image URL (remove crop parameters)
+        const fullImageUrl = experience.image.replace(
+          /w=\d+&h=\d+&fit=crop/,
+          "w=1200&h=800&fit=cover",
+        );
+
+        // Populate content
+        content.innerHTML = `
+        <button 
+          class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200 text-2xl font-bold"
+          id="life-close-expanded"
+        >
+          ×
+        </button>
+        
+        <div class="pr-8">
+          <img 
+            src="${fullImageUrl}" 
+            alt="${experience.title}" 
+            class="expanded-image"
+          />
+          
+          <h2 class="text-3xl font-bold text-white mb-4">${experience.title}</h2>
+          
+          <div class="mb-4">
+            ${experience.location ? `<p class="text-gray-400 mb-4">📍 ${experience.location}</p>` : ""}
+          </div>
+          
+          <p class="text-gray-300 text-lg leading-relaxed mb-6">${experience.description}</p>
+          
+          ${
+            experience.tags && experience.tags.length > 0
+              ? `
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold text-white mb-3">Tags:</h3>
+              <div class="flex flex-wrap gap-2">
+                ${experience.tags.map((tag) => `<span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-md border border-gray-600">${tag}</span>`).join("")}
+              </div>
+            </div>
+          `
+              : ""
+          }
+        </div>
+      `;
+
+        // Re-add close button event listener
+        const newCloseButton = content.querySelector("#life-close-expanded");
+        if (newCloseButton) {
+          newCloseButton.addEventListener("click", closeLifeExpanded);
+        }
+
+        // Show overlay with animation
+        overlay.classList.remove("hidden");
+        setTimeout(() => {
+          overlay.classList.add("show");
+        }, 10);
+
+        currentlyExpandedLife = index;
+      }
+    }
+
+    function closeLifeExpanded() {
+      const overlay = document.getElementById("life-expanded-overlay");
+      if (overlay) {
+        overlay.classList.remove("show");
+        setTimeout(() => {
+          overlay.classList.add("hidden");
+        }, 500);
+      }
+      currentlyExpandedLife = null;
+    }
+  })(); // End of IIFE - completely isolates life tab JavaScript
+</script>
