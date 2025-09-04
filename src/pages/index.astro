@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import PostHogLayout from "../layouts/PostHogLayout.astro";
 
 import Profile from "../components/Profile.astro";
 import Contact from "../components/Contact.astro";
@@ -11,7 +11,7 @@ import ContentExperience from "../components/ContentExperience.astro";
 import ContentLife from "../components/ContentLife.astro";
 ---
 
-<Layout>
+<PostHogLayout>
     <!-- Start: Main Wrapper -->
     <main
         class="flex flex-col md:flex-row w-full max-w-full md:max-w-7xl border border-gray-600 rounded-2xl overflow-hidden shadow-2xl relative bg-black mb-12 md:mb-4"
@@ -118,7 +118,7 @@ import ContentLife from "../components/ContentLife.astro";
             class="text-primary hover:underline">John Perez</a
         >
     </div>
-</Layout>
+</PostHogLayout>
 
 <style is:global>
     /* Hide the radio buttons */
